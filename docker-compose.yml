@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  db:
+    image: gvenzl/oracle-xe:21-slim
+    environment:
+      ORACLE_PASSWORD: oracle
+      APP_USER: app
+      APP_USER_PASSWORD: app
+      ORACLE_DATABASE: ORCL
+    ports:
+      - "1521:1521"
+  app:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@//db:1521/ORCL
+      SPRING_DATASOURCE_USERNAME: app
+      SPRING_DATASOURCE_PASSWORD: app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
